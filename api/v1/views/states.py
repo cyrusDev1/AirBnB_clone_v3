@@ -25,7 +25,7 @@ def states(state_id=''):
             new = State(**req)
             storage.new(new)
             storage.save()
-            return make_response(jsonify(new.to_dict()), 201)
+            return jsonify(new.to_dict()), 201
     else:
         state = storage.get(State, state_id)
         if state is None:
@@ -40,5 +40,5 @@ def states(state_id=''):
             req = request.get_json()
             if req is None:
                 abort(400, "Not a JSON")
-            state.update(req)
-            return make_response(jsonify(state.to_dict()), 200)
+            state.my_update(req)
+            return jsonify(state.to_dict())

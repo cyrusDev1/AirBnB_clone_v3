@@ -74,7 +74,7 @@ class BaseModel:
         """delete the current instance from the storage"""
         models.storage.delete(self)
 
-    def update(self, attr=None):
+    def my_update(self, attr=None):
         """updates attributes of any object"""
         if attr is not None:
             dict_upd = {}
