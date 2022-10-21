@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Airbnb api with Flask"""
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 import os
@@ -21,6 +21,11 @@ def teawrdown(exc):
     """
     storage.close()
 
+
+@app.errorhandler(404)
+def not_found(error):
+    """Handle not found page"""
+    return jsonify({"error": "Not found"})
 
 if __name__ == "__main__":
     """Main flask app"""
