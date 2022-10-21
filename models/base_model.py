@@ -73,3 +73,19 @@ class BaseModel:
     def delete(self):
         """delete the current instance from the storage"""
         models.storage.delete(self)
+
+    def update(self, attr=None):
+        """updates attributes of any object"""
+        if attr is not None:
+            dict_upd = {}
+            ignore_attr = [
+            'id', 'created_at', 'updated_at', 'email',
+            'state_id', 'user_id', 'city_id', 'place_id']
+
+            for key, value in attr.items():
+                if key not in ignore_attr:
+                    dict_upd[key] = value
+
+            for key, value in dict_upd.items():
+                setattr(self, key, value)
+            self.save()
