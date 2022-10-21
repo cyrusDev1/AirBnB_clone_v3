@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Flask routes states""""
+"""Flask routes states"""
 from flask import jsonify, request, abort, make_response
 from api.v1.views import app_views
 from models import storage
