@@ -79,8 +79,9 @@ class BaseModel:
         if attr is not None:
             dict_upd = {}
             ignore_attr = [
-            'id', 'created_at', 'updated_at', 'email',
-            'state_id', 'user_id', 'city_id', 'place_id']
+                'id', 'created_at', 'updated_at', 'email',
+                'state_id', 'user_id', 'city_id', 'place_id'
+            ]
 
             for key, value in attr.items():
                 if key not in ignore_attr:
