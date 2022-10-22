@@ -52,6 +52,7 @@ def city(city_id=''):
         if req is None:
             abort(400, "Not a JSON")
         city.my_update(req)
+        return jsonify(city.to_dict())
 
         return jsonify(city.to_dict())
     elif request.method == "DELETE":

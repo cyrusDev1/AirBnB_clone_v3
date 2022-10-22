@@ -53,6 +53,7 @@ def update(amenity_id):
     if req is None:
         abort(400, "Not a JSON")
     amenity.my_update(req)
+    return jsonify(amenity.to_dict())
 
 
 @app_views.route("/amenities/<amenity_id>", methods=['DELETE'])
