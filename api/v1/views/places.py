@@ -26,12 +26,12 @@ def places_city(city_id):
         req = request.get_json()
         if req is None:
             abort(400, 'Not a JSON')
-        for key in ['user_id', 'name']:
-            if req.get(key) is None:
-                abort(400, "Missing {}".format(key))
-        user = storage.get(User, req.get('user_id'))
-        if user is None:
+        if req.get('user_id') is None:
+            abort(400, "Missing user_id")
+        if storage.get(User, req.get('user_id')) is None:
             abort(404)
+        if req.get('name') is None:
+            abort(400, "Missing name")
         req['city_id'] = city_id
         new = Place(**req)
         storage.new(new)
@@ -60,4 +60,4 @@ def places(place_id):
             abort(400, 'Not a JSON')
         place.my_update(req)
         storage.save()
-        return jsonify(place.to_dict())
+        return jsonify(place.to_dict()), 200
