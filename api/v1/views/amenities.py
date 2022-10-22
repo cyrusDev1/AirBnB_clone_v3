@@ -12,7 +12,7 @@ from models.amenity import Amenity
 def index():
     """Retrieves the list of all Amenities objects: GET /api/v1/amenities"""
 
-    amenities = [am.to_dict() for am in storage.all(Amenity).values()]
+    amenities = [am.to_dict() for am in list(storage.all(Amenity).values())]
     return jsonify(amenities)
 
 
@@ -60,6 +60,10 @@ def update(amenity_id):
 def destroy(amenity_id):
     """Deletes a Amenity object: DELETE /api/v1/amenities/<amenity_id>"""
 
-    storage.delete(amenity_id)
+    amenity = storage.get(Amenity, amenity_id)
+    if amenity is None:
+        abort(404)
+
+    storage.delete(amenity)
     storage.save()
     return jsonify({})
