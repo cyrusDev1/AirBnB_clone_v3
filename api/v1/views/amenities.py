@@ -12,7 +12,7 @@ from models.amenity import Amenity
 def index():
     """Retrieves the list of all Amenities objects: GET /api/v1/amenities"""
 
-    amenities = [amenity.to_dict() for amenity in storage.all(Amenity).values()]
+    amenities = [am.to_dict() for am in storage.all(Amenity).values()]
     return jsonify(amenities)
 
 
