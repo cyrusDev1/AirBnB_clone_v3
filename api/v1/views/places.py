@@ -10,15 +10,17 @@ from models.city import City
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'])
 def places_city(city_id=""):
     """return places in city"""
+    city = storage.get(City, city_id)
+    if city is None:
+        abort(400)
+
     if request.method == 'GET':
-        city = storage.get(City, city_id)
-        if city is None:
-            abort(400)
         places = [
             place.to_dict() for place in list(storage.all(Place).values())
             if place.city_id == city_id
             ]
         return jsonify(places)
+
     elif request.method == 'POST':
         req = request.get_json()
         if req is None:
@@ -26,9 +28,10 @@ def places_city(city_id=""):
             for key in ['user_id', 'name']:
                 if req.get(key) is None:
                     abort(400, "Missing {}".format(key))
-            user = storage.get(User, user_id)
+            user = storage.get(User, req.get('user_id'))
             if user is None:
                 abort(404)
+            req['city_id'] = city_id
             new = Place(**req)
             storage.new(new)
             storage.save()
@@ -41,12 +44,15 @@ def places(place_id='', methods=['GET', 'DELETE', 'PUT']):
     place = storage.get(Place, place_id)
     if place is None:
         abort(400)
+
     if request.method == 'GET':
         return jsonify(place.to_dict())
+
     elif request.method == 'DELETE':
         storage.delete(place)
         storage.save()
         return jsonify({})
+
     elif request.method == 'PUT':
         req = request.get_json()
         if req is None:
