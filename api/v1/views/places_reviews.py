@@ -14,11 +14,11 @@ def places_reviews(place_id):
     """Retrieves the list of all Review objects of a
     Place: GET /api/v1/places/<place_id>/reviews"""
 
-    place = storage.get(Review, place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
 
-    reviews = [re.to_dict() for re in place.cities]
+    reviews = [re.to_dict() for re in place.reviews]
     return jsonify(reviews)
 
 
@@ -26,7 +26,7 @@ def places_reviews(place_id):
 def create(place_id):
     """Creates a Review: POST /api/v1/places/<place_id>/reviews"""
 
-    place = storage.get(Review, place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
 
