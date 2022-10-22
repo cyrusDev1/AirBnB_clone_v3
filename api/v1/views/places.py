@@ -5,10 +5,11 @@ from api.v1.views import app_views
 from models import storage
 from models.place import Place
 from models.city import City
+from models.user import User
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'])
-def places_city(city_id=""):
+def places_city(city_id):
     """return places in city"""
     city = storage.get(City, city_id)
     if city is None:
@@ -25,25 +26,25 @@ def places_city(city_id=""):
         req = request.get_json()
         if req is None:
             abort(400, 'Not a JSON')
-            for key in ['user_id', 'name']:
-                if req.get(key) is None:
-                    abort(400, "Missing {}".format(key))
-            user = storage.get(User, req.get('user_id'))
-            if user is None:
-                abort(404)
-            req['city_id'] = city_id
-            new = Place(**req)
-            storage.new(new)
-            storage.save()
-            return jsonify(new.to_dict()), 201
+        for key in ['user_id', 'name']:
+            if req.get(key) is None:
+                abort(400, "Missing {}".format(key))
+        user = storage.get(User, req.get('user_id'))
+        if user is None:
+            abort(404)
+        req['city_id'] = city_id
+        new = Place(**req)
+        storage.new(new)
+        storage.save()
+        return jsonify(new.to_dict()), 201
 
 
-@app_views.route('/places/<place_id>')
-def places(place_id='', methods=['GET', 'DELETE', 'PUT']):
+@app_views.route('/places/<place_id>', methods=['GET', 'DELETE', 'PUT'])
+def places(place_id):
     """return place"""
     place = storage.get(Place, place_id)
     if place is None:
-        abort(400)
+        abort(404)
 
     if request.method == 'GET':
         return jsonify(place.to_dict())
