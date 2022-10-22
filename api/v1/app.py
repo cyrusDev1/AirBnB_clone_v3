@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """Airbnb api with Flask"""
-from flask import Flask, jsonify, make_response
-from models import storage
-from api.v1.views import app_views
 import os
+
+from flask import Flask, jsonify, make_response
+
+from api.v1.views import app_views
+from models import storage
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
