@@ -7,35 +7,18 @@ from models.place import Place
 from models.city import City
 
 
-@app_views.route('/cities')
-def cities():
-    all_cities = []
-    for user in list(storage.all(City).values()):
-        all_cities.append(user.to_dict())
-    return jsonify(all_cities)
-
-
-@app_views.route('/cities/<city_id>/places')
+@app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'])
 def places_city(city_id=""):
     """return places in city"""
-    city = storage.get(City, city_id)
-    if city is None:
-        abort(400)
-    places = [
-        place.to_dict() for place in list(storage.all(Place).values())
-        if place.city_id == city_id
-        ]
-    return jsonify(places)
-
-
-@app_views.route('/places/<place_id>')
-def places_index(place_id='', methods=['GET']):
-    """return place"""
-    place = storage.get(Place, place_id)
-    if city is None:
-        abort(400)
     if request.method == 'GET':
-        return jsonify(place.to_dict())
+        city = storage.get(City, city_id)
+        if city is None:
+            abort(400)
+        places = [
+            place.to_dict() for place in list(storage.all(Place).values())
+            if place.city_id == city_id
+            ]
+        return jsonify(places)
     elif request.method == 'POST':
         req = request.get_json()
         if req is None:
@@ -53,10 +36,10 @@ def places_index(place_id='', methods=['GET']):
 
 
 @app_views.route('/places/<place_id>')
-def places_index(place_id='', methods=['GET', 'DELETE', 'PUT']):
+def places(place_id='', methods=['GET', 'DELETE', 'PUT']):
     """return place"""
     place = storage.get(Place, place_id)
-    if city is None:
+    if place is None:
         abort(400)
     if request.method == 'GET':
         return jsonify(place.to_dict())
