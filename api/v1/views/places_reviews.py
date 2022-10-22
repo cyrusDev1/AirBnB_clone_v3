@@ -7,6 +7,7 @@ from api.v1.views import app_views
 from models import storage
 from models.place import Place
 from models.review import Review
+from models.user import User
 
 
 @app_views.route("places/<place_id>/reviews", methods=['GET'])
@@ -18,7 +19,7 @@ def places_reviews(place_id):
     if place is None:
         abort(404)
 
-    reviews = [re.to_dict() for re in place.reviews]
+    reviews = list(map(lambda review: review.to_dict(), place.reviews))
     return jsonify(reviews)
 
 
@@ -33,8 +34,15 @@ def create_review(place_id):
     req = request.get_json()
     if req is None:
         abort(400, "Not a JSON")
-    if req.get("name") is None:
-        abort(400, "Missing name")
+
+    if req.get("user_id") is None:
+        abort(400, "Missing user_id")
+
+    if storage.get(User, req.get("user_id")) is None:
+        abort(404)
+
+    if req.get("text") is None:
+        abort(400, "Missing text")
 
     req.update({'place_id': place_id})
     new = Review(**req)
