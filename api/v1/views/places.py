@@ -13,7 +13,7 @@ def places_city(city_id):
     """return places in city"""
     city = storage.get(City, city_id)
     if city is None:
-        abort(400)
+        abort(404)
 
     if request.method == 'GET':
         places = [
