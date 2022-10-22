@@ -51,8 +51,6 @@ def city(city_id=''):
 
         if req is None:
             abort(400, "Not a JSON")
-        to_ignore = ['id', 'state_id', 'created_at', 'updated_at']
-        data = {k: val for k, val in enumerate(req) if k not in to_ignore}
         city.my_update(req)
 
         return jsonify(city.to_dict())
