@@ -23,7 +23,7 @@ def places_reviews(place_id):
 
 
 @app_views.route("/places/<place_id>/reviews", methods=['POST'])
-def create(place_id):
+def create_review(place_id):
     """Creates a Review: POST /api/v1/places/<place_id>/reviews"""
 
     place = storage.get(Place, place_id)
@@ -44,7 +44,7 @@ def create(place_id):
 
 
 @app_views.route("/reviews/<review_id>", methods=['GET'])
-def show(review_id):
+def show_review(review_id):
     """Retrieves a Review object: GET /api/v1/reviews/<review_id>"""
 
     review = storage.get(Review, review_id)
@@ -55,7 +55,7 @@ def show(review_id):
 
 
 @app_views.route("/reviews/<review_id>", methods=['PUT'])
-def update(review_id):
+def update_review(review_id):
     """Updates a Review object: PUT /api/v1/reviews/<review_id>"""
     req = request.get_json()
     review = storage.get(Review, review_id)
@@ -69,7 +69,7 @@ def update(review_id):
 
 
 @app_views.route("/reviews/<review_id>", methods=['DELETE'])
-def destroy(review_id):
+def destroy_review(review_id):
     """Deletes a Review object: DELETE /api/v1/reviews/<review_id>"""
 
     review = storage.get(Review, review_id)
