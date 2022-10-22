@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """Flask routes for users"""
 from email.policy import strict
-from flask import jsonify, abort, request, make_response
+
+from flask import abort, jsonify, make_response, request
+
 from api.v1.views import app_views
-from models.user import User
 from models import storage
+from models.user import User
 
 
 @app_views.route('/users', methods=['GET', 'POST'])
