@@ -33,7 +33,6 @@ class User(BaseModel, Base):
                 self.set_password(pwd)
         super().__init__(*args, **kwargs)
 
-
     def set_password(self, pwd):
         """Set password: md5"""
         m = hashlib.md5()
