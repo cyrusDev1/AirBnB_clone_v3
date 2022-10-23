@@ -35,6 +35,7 @@ class User(BaseModel, Base):
 
 
     def set_password(self, pwd):
+        """Set password: md5"""
         m = hashlib.md5()
         m.update(pwd.encode("utf-8"))
         hash = m.hexdigest()
