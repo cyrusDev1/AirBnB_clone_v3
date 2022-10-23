@@ -12,7 +12,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import uuid
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
-
+HBNB_TYPE_STORAGE = getenv('HBNB_TYPE_STORAGE')
 if models.storage_t == "db":
     Base = declarative_base()
 else:
@@ -68,6 +68,8 @@ class BaseModel:
         new_dict["__class__"] = self.__class__.__name__
         if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]
+        if HBNB_TYPE_STORAGE == 'db':
+            del new_dict["password"]
         return new_dict
 
     def delete(self):
