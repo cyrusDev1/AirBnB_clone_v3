@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """Flask routes places"""
-from tkinter import EXCEPTION
 from flask import jsonify, request, abort, make_response
-from AirBnB_clone_v3.api.v1.views import amenities
 from api.v1.views import app_views
 from models import storage
 from models.place import Place
