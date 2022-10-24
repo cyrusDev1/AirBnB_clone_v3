@@ -1,11 +1,14 @@
 #!/usr/bin/python3
 """Flask routes places"""
+from tkinter import EXCEPTION
 from flask import jsonify, request, abort, make_response
+from AirBnB_clone_v3.api.v1.views import amenities
 from api.v1.views import app_views
 from models import storage
 from models.place import Place
 from models.city import City
 from models.user import User
+from models.state import State
 
 
 @app_views.route('/cities/<city_id>/places', methods=['GET', 'POST'])
@@ -61,3 +64,39 @@ def places(place_id):
         place.my_update(req)
         storage.save()
         return jsonify(place.to_dict()), 200
+
+
+@app_views.route('/places_search', methods=['POST'])
+def places_search():
+    """Search place"""
+    query = request.get_json()
+    if query is None:
+        abort(400, "Not a JSON")
+
+    if (query == {} or (
+        not query.get('states')
+            and not query.get('cities')
+            and not query.get('amenities'))):
+        places = []
+        for place in list(storage.all(Place).values()):
+            places.append(place.to_dict())
+        return jsonify(places)
+
+    places = []
+    if query.get("states"):
+        states = [storage.get(State, id) for id in query.get("states")]
+        for state in states:
+            for city in state.cities:
+                for place in city.places:
+                    places.append(place)
+
+    if query.get("cities"):
+        cities = [storage.get(City, id) for id in query.get("cities")]
+        for city in cities:
+            for place in city.places:
+                if place not in places:
+                    places.append(place)
+
+    if query.get("amenities"):
+        pass
+    return jsonify([place.to_dict() for place in places])
