@@ -95,6 +95,9 @@ def places_search():
                 if place not in places:
                     places.append(place)
 
+    if places == []:
+        places = [place for place in storage.all(Place).values()]
+
     if query.get("amenities"):
         pass
     return jsonify([place.to_dict() for place in places])
